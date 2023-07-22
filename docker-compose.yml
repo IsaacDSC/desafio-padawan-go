@@ -1,0 +1,48 @@
+version: "3"
+
+services:
+  desafio-padawan-go:
+    container_name: exchange_rate
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/usr/app
+    ports:
+      - "${PORT}:${PORT}"
+    restart: "on-failure"
+
+  database:
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_USER: dev
+      MYSQL_PASSWORD: secret
+      MYSQL_DATABASE: desafiopadawango
+    restart: always
+    ports:
+      - "3306:3306"
+    volumes:
+      - /var/lib/mysql
+    networks:
+      - mysql-phpmyadmin
+  
+  phpmyadmin:
+    depends_on:
+      - database
+    image: phpmyadmin
+    container_name: mysqladmin
+    links:
+      - database
+    environment:
+      PPMA_HOST: db
+      MYSQL_ROOT_PASSWORD: password
+    restart: always
+    ports:
+      - 8081:80
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:

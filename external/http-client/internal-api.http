@@ -1,0 +1,10 @@
+###
+GET http://localhost:3000/
+
+
+### GENERATE ERROR PARSER AMOUNT
+GET  http://localhost:3000/exchange/amount/from/to/rate
+
+
+### 
+GET  http://localhost:3000/exchange/100.00/BRL/USD/rate

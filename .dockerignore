@@ -1,0 +1,6 @@
+docs
+.vscode
+**.http
+test
+.gitignore
+.editorconfig

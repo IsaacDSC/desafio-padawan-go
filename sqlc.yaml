@@ -1,0 +1,7 @@
+version: 1
+packages:
+  - path: "./external/sqlc"
+    name: "sqlc"
+    engine: "mysql"
+    schema: "./src/infra/database/sqlc/schema.sql"
+    queries: "./src/infra/database/sqlc/query.sql"
