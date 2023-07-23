@@ -2,14 +2,13 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/IsaacDSC/desafio-padawan-go/src/domain"
 	"github.com/IsaacDSC/desafio-padawan-go/src/infra/repositories"
-	"github.com/IsaacDSC/desafio-padawan-go/src/infra/server/http/validations"
 	"github.com/IsaacDSC/desafio-padawan-go/src/services"
+	"github.com/IsaacDSC/desafio-padawan-go/src/validations"
 )
 
 func getServiceInstanceRateMoney() *services.ConvertRateMoneyService {
@@ -44,12 +43,12 @@ func Get_ExchangeRateController(res http.ResponseWriter, req *http.Request) {
 		res.Write(output_error)
 		return
 	}
-	// if list_params[0]
+	rate := validations.RateIsValid(list_params)
 	input := services.InputExchangeRateService{
 		Amount: list_params[0],
 		From:   list_params[1],
 		To:     list_params[2],
-		Rate:   list_params[3],
+		Rate:   rate,
 	}
 	service := getServiceInstanceRateMoney()
 	converted, list_errors := service.ConvertFromTo(input)
@@ -63,7 +62,6 @@ func Get_ExchangeRateController(res http.ResponseWriter, req *http.Request) {
 		res.Write(output)
 		return
 	}
-	fmt.Println("converted", converted)
 	output, err := json.Marshal(converted)
 	if err != nil {
 		res.WriteHeader(http.StatusInternalServerError)

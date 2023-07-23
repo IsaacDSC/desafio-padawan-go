@@ -2,15 +2,25 @@ package domain
 
 import (
 	"database/sql"
-	"fmt"
 	"strconv"
 
 	"github.com/IsaacDSC/desafio-padawan-go/external/sqlc"
 	"github.com/IsaacDSC/desafio-padawan-go/src/infra/repositories"
 )
 
+type ConvertRateMoneyEntityInterface interface {
+	SetRate(rate float32)
+	GetAndSetRate() (list_errors []string)
+	SetAmount(money float32, from string, to string)
+	CalculateMoneyConvert() (output float32)
+	GetSymbolMoney() (output string)
+	SaveInfo() (list_errors []string)
+	GetExchangeRate() float32
+	GetAndSetRateBTC_USD() (list_errors []string)
+}
+
 type ConvertRateMoneyEntity struct {
-	Repository   *repositories.RateRepository
+	Repository   repositories.RateRepositoryInterface
 	ExchangeRate float32
 	Money        float32
 	To           string
@@ -19,7 +29,11 @@ type ConvertRateMoneyEntity struct {
 	MoneyOut     float32
 }
 
-func (this_entity *ConvertRateMoneyEntity) GetRate() (list_errors []string) {
+func (this_entity *ConvertRateMoneyEntity) SetRate(rate float32) {
+	this_entity.ExchangeRate = rate
+}
+
+func (this_entity *ConvertRateMoneyEntity) GetAndSetRate() (list_errors []string) {
 	if this_entity.TypeMoney == "" {
 		list_errors = append(list_errors, "TypeMoneyEqualNil - Set primary amount")
 		return
@@ -30,11 +44,24 @@ func (this_entity *ConvertRateMoneyEntity) GetRate() (list_errors []string) {
 	}
 	floatValue, err := strconv.ParseFloat(listRates[0].Bid, 64)
 	if err != nil {
-		fmt.Println("Erro ao converter a string:", err)
+		list_errors = append(list_errors, err.Error())
 		return
 	}
 	this_entity.ExchangeRate = float32(floatValue)
 
+	return
+}
+
+func (this_entity *ConvertRateMoneyEntity) GetAndSetRateBTC_USD() (list_errors []string) {
+	if this_entity.TypeMoney == "" {
+		list_errors = append(list_errors, "TypeMoneyEqualNil - Set primary amount")
+		return
+	}
+	data, err := this_entity.Repository.FetchExchangeRateBTC_USD()
+	if err != nil {
+		list_errors = append(list_errors, err.Error())
+	}
+	this_entity.ExchangeRate = float32(data.Data.Num1.Quotes.USD.Price)
 	return
 }
 
@@ -84,4 +111,8 @@ func (this_entity *ConvertRateMoneyEntity) SaveInfo() (list_errors []string) {
 		list_errors = append(list_errors, err.Error())
 	}
 	return
+}
+
+func (this_entity *ConvertRateMoneyEntity) GetExchangeRate() float32 {
+	return this_entity.ExchangeRate
 }

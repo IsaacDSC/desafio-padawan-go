@@ -7,4 +7,10 @@ GET  http://localhost:3000/exchange/amount/from/to/rate
 
 
 ### 
-GET  http://localhost:3000/exchange/100.00/BRL/USD/rate
+GET  http://localhost:3000/exchange/100.00/USD/BRL/rate
+
+### 
+GET  http://localhost:3000/exchange/1/BTC/USD/rate
+
+### 
+GET  http://localhost:3000/exchange/1/BTC/BRL/rate

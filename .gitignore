@@ -3,3 +3,4 @@ requirements.txt
 testes.requirements.txt
 scripts
 .vscode
+__debug_bin
