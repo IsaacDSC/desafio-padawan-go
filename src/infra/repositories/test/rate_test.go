@@ -2,12 +2,19 @@ package test
 
 import (
 	"database/sql"
+	"path/filepath"
 	"testing"
 
 	"github.com/IsaacDSC/desafio-padawan-go/external/sqlc"
+	"github.com/IsaacDSC/desafio-padawan-go/src/infra/environments"
 	"github.com/IsaacDSC/desafio-padawan-go/src/infra/repositories"
 	"github.com/stretchr/testify/assert"
 )
+
+func init() {
+	path_env, _ := filepath.Abs("../../../../.env")
+	environments.StartEnv(path_env)
+}
 
 func TestSaveInfoRepository(t *testing.T) {
 	repository := repositories.RateRepository{}

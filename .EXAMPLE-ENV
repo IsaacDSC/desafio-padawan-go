@@ -1,0 +1,6 @@
+PORT=3000
+MYSQL_USER="dev"
+MYSQL_PASS="secret"
+MYSQL_DATABASE="desafiopadawango"
+MYSQL_HOST="localhost"
+MYSQL_PORT=3306

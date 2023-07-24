@@ -5,8 +5,10 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"path/filepath"
 	"testing"
 
+	"github.com/IsaacDSC/desafio-padawan-go/src/infra/environments"
 	server "github.com/IsaacDSC/desafio-padawan-go/src/infra/server/http"
 	"github.com/IsaacDSC/desafio-padawan-go/src/services"
 	"github.com/stretchr/testify/assert"
@@ -14,6 +16,8 @@ import (
 
 func init() {
 	go func() {
+		path_env, _ := filepath.Abs("../.env")
+		environments.StartEnv(path_env)
 		http_server := server.HttpServer{}
 		server_http := http_server.StartServerHttp()
 		http_server.SetMiddleware()
