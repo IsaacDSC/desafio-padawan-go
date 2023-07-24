@@ -9,3 +9,16 @@
 ```sh
 cat src/infra/database/sqlc/schema.sql
 ```
+
+### start application;
+```sh
+go run ./src/cmd/main.go
+```
+
+### start tests application;
+```sh
+go test ./...
+```
+
+### Test To API
+*http-client => external/http-client/internal-api.http*
