@@ -40,7 +40,8 @@ func (this_entity *ConvertRateMoneyEntity) GetAndSetRate() (list_errors []string
 	}
 	listRates, err := this_entity.Repository.FetchExchangeRate(this_entity.TypeMoney)
 	if err != nil {
-		list_errors = append(list_errors, err.Error())
+		list_errors = append(list_errors, "Not-Found-Exchange-Rate")
+		return
 	}
 	floatValue, err := strconv.ParseFloat(listRates[0].Bid, 64)
 	if err != nil {
@@ -48,7 +49,6 @@ func (this_entity *ConvertRateMoneyEntity) GetAndSetRate() (list_errors []string
 		return
 	}
 	this_entity.ExchangeRate = float32(floatValue)
-
 	return
 }
 
