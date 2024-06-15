@@ -5,3 +5,4 @@ scripts
 .vscode
 __debug_bin
 .env
+.idea
